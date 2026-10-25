@@ -3,6 +3,7 @@ import { pumpIndexer } from "./pump-engine.js";
 import { discoveryEngine } from "./discovery-engine.js";
 import { argusIndexer } from "./argus-engine.js";
 import { ponsIndexer } from "./pons-engine.js";
+import { bscLaunchIndexer } from "./bsc-launch-reader.js";
 let started = false;
 function ensureDexHunterEngines() {
   if (started) return;
@@ -27,6 +28,12 @@ function ensureDexHunterEngines() {
   });
   ponsIndexer.start().catch((err) => {
     console.error("[Pons Indexer] Startup error:", err);
+  });
+  bscLaunchIndexer.onNewLaunch((pair) => {
+    discoveryEngine.ingestToken(pair);
+  });
+  bscLaunchIndexer.start().catch((err) => {
+    console.error("[BSC Indexer] Startup error:", err);
   });
 }
 export {

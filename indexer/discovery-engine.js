@@ -3,6 +3,7 @@ import { pumpIndexer, getSolUsdPrice } from "./pump-engine.js";
 import { pumpCurveQuote } from "./pump-create.js";
 import { argusIndexer } from "./argus-engine.js";
 import { ponsIndexer } from "./pons-engine.js";
+import { bscLaunchIndexer } from "./bsc-launch-reader.js";
 import { normalizeChainName, normalizeDexName, getDexTradingUrl } from "../src/lib/dexPriority.js";
 import { chainTokenKey, identityAddress } from "../src/lib/addressCase.js";
 import { knownNumber } from "./feed-rules.js";
@@ -157,6 +158,8 @@ class DiscoveryEngine {
       this.ingestArgusTokens();
       await this.catchUpPons();
       this.ingestPonsTokens();
+      await this.catchUpBsc();
+      this.ingestBscTokens();
       const dexscreenerPromise = this.ingestDexScreenerTrending();
       const dexSearchPromise = this.ingestNativeDexSearches();
       const hyperSearch = fetchWithTimeout(
@@ -378,6 +381,25 @@ class DiscoveryEngine {
       console.warn("[DiscoveryEngine] Failed ingesting Pons tokens:", err);
     }
   }
+  ingestBscTokens() {
+    try {
+      if (!this.bscStamp) this.bscStamp = new Map();
+      let taken = 0;
+      for (const pair of bscLaunchIndexer.getTokens()) {
+        if (taken >= 1500) break;
+        const addr = pair?.baseToken?.address;
+        if (!addr) continue;
+        const key = addr.toLowerCase();
+        const stamp = `${pair.baseToken?.name || ""}|${pair.baseToken?.symbol || ""}|${pair.priceUsd || ""}|${pair.bondingProgress ?? ""}|${pair.marketStage || ""}`;
+        if (this.bscStamp.get(key) === stamp) continue;
+        this.bscStamp.set(key, stamp);
+        taken += 1;
+        this.addOrUpdateToken(`bsc:${key}`, pair);
+      }
+    } catch (err) {
+      console.warn("[DiscoveryEngine] Failed ingesting BSC launches:", err);
+    }
+  }
   /**
    * Fetches fresh and high-activity tokens directly from the Pump.fun API
    */
@@ -576,6 +598,8 @@ class DiscoveryEngine {
     if (fresh) {
       await this.catchUpPons();
       this.ingestPonsTokens();
+      await this.catchUpBsc();
+      this.ingestBscTokens();
       return;
     }
     if (this.liveInflight) return this.liveInflight;
@@ -593,9 +617,19 @@ class DiscoveryEngine {
       console.warn("[DiscoveryEngine] Pons catch-up:", err?.message || err);
     }
   }
+  async catchUpBsc() {
+    try {
+      if (!bscLaunchIndexer.timer) bscLaunchIndexer.start().catch(() => {});
+      await bscLaunchIndexer.catchUp({ maxChunks: 2, maxMs: 800 });
+    } catch (err) {
+      console.warn("[DiscoveryEngine] BSC catch-up:", err?.message || err);
+    }
+  }
   async runQuickLivePass() {
     await this.catchUpPons();
     this.ingestPonsTokens();
+    await this.catchUpBsc();
+    this.ingestBscTokens();
     const nets = [
       ["solana", "solana"],
       ["eth", "ethereum"],
@@ -612,6 +646,7 @@ class DiscoveryEngine {
     this.ingestSolanaPumpTokens();
     this.ingestArgusTokens();
     this.ingestPonsTokens();
+    this.ingestBscTokens();
     if (this.indexedTokens.size > 0) this.lastIndexedAt = Date.now();
   }
   /**

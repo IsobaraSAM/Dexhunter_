@@ -30,7 +30,7 @@ export function saveIndex(file, data) {
   fs.renameSync(tmp, file);
 }
 
-const ONCHAIN_CHAINS = ["solana", "robinhood", "arc"];
+const ONCHAIN_CHAINS = ["solana", "robinhood", "arc", "bsc"];
 
 export function retainTokens(tokens, max = MAX_TOKENS) {
   const list = Array.isArray(tokens) ? tokens : [];

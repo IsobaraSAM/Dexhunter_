@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { lookupArgusLaunch } from "./portal8-reader.js";
 import { lookupPonsLaunch } from "./pons-engine.js";
+import { lookupBscLaunch } from "./bsc-launch-reader.js";
 import { searchMarkets } from "./direct-search.js";
 import { collectAddressMatches, isAddressQuery, parseAddressQuery } from "../src/lib/addressQuery.js";
 
@@ -10,6 +11,7 @@ function chainName(value) {
   if (c === "robinhoodchain" || c === "rh") return "robinhood";
   if (c === "arcchain") return "arc";
   if (c === "sol") return "solana";
+  if (c === "bnb" || c === "binance" || c === "bnbsmartchain") return "bsc";
   return c;
 }
 
@@ -143,6 +145,9 @@ export async function resolveAddress(tokens, address, chain = "all", options = {
   }
   if (evm && (selected === "all" || selected === "robinhood")) {
     jobs.push(["Pons", () => lookupPonsLaunch(lookup)]);
+  }
+  if (evm && (selected === "all" || selected === "bsc")) {
+    jobs.push(["Four.meme", () => lookupBscLaunch(lookup)]);
   }
   if (solana && (selected === "all" || selected === "solana")) {
     jobs.push(["Markets", () => searchMarkets(lookup)]);

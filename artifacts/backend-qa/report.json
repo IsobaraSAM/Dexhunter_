@@ -1,0 +1,255 @@
+{
+  "bugs": [
+    {
+      "severity": "high",
+      "endpoint": "GET /api/discovery?q=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v and GET /api/discovery?address=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "what": "A mint lookup returns pairs that only quote that mint. Searching USDC returns unrelated base tokens (BIRB, CARDS, PUMP) whose only USDC field is quoteToken.address.",
+      "evidence": "Both q= and address= returned 200, lookedUp true, total 4, in 0.61s and 1.29s. Hits: USDC/SOL pancakeswap (base is USDC, correct); BIRB G7vQWurMkMMm2dU3iZpXYFTHT9Biio4F4gZCrwFpKNwG pair GUWFT7bb\u2026 quote USDC; CARDS CARDSccUMFKoPRZxt5vt3ksUbxEFEcnZ3H2pd3dKxYjp quote USDC; PUMP pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn dex pumpswap quote USDC. Walking every string on BIRB/CARDS/PUMP, the USDC mint appears only at quoteToken.address."
+    },
+    {
+      "severity": "high",
+      "endpoint": "GET /api/token-holders?address=2uKFG9tCVqbxC4meRmetj41tAYCcA7gKKWze2Fknpump&chain=solana",
+      "what": "totalSupplyFormatted is the raw integer, not the decimal-adjusted supply. The holder panel prints it as Total Supply, so this Pump mint shows 1e15 instead of 1e9.",
+      "evidence": "200 in 0.16s, source onchain-solana-rugcheck. Body: totalSupply 1000000000000000, totalSupplyFormatted \"1,000,000,000,000,000\", decimals 6, totalHolders 3, top10SupplyPercentage 100. Top holder balance 1000000000 (ui amount) at 100%, which only matches a 1,000,000,000 token supply. UI renders totalSupplyFormatted next to the symbol."
+    },
+    {
+      "severity": "medium",
+      "endpoint": "GET /api/discovery?q=GRAM&shape=browse and GET /api/discovery?q=gram&shape=browse",
+      "what": "Ticker search uses endsWith, so a short word matches a longer ticker that merely ends with those letters. q=GRAM returns PROGRAM and ARGRAM even though the name/ticker is not the word GRAM. No mint-only hit was returned (symbol or name always contained the letters).",
+      "evidence": "200, totals fluctuated 31\u201338 as the live index changed (0.75s\u20133.7s). Stable false positives: PROGRAM / program, mint xQgNwXsp6wwGs76JLiqsPDVyuH7B9Q92EJ8PAc7bonk; ARGRAM / Argus Social, 0x75d7c00dc786e30eF2f8678981A062ceAc21C8CB. An earlier pull in the same run also returned INSTAGRAM, IMAGEGRAM, inustagram, and $Monogram (name \"Felix Koutchinski\"). q=gram and q=GRAM are the same matcher; the one-token case gap was a live insert, not case sensitivity. q=telegram&shape=browse returned 40/40 name-or-ticker word matches (including names like \"THE FOMOAPP TELEGRAM BOT\") and zero mint-only rows; results are capped at 40."
+    },
+    {
+      "severity": "medium",
+      "endpoint": "GET /api/discovery?mode=trending&limit=50&age=1w",
+      "what": "info.imageUrl is sometimes a bare DexScreener id, not a URL, so the card image cannot load.",
+      "evidence": "One trending page (38 tokens, 2.59s) had 20 non-URL imageUrls, including solana TRUMP \"gYsO2EzMExNLL-Db\", GDC \"kIfShJILEIsPOann\", REMUS \"RSLqRr5vubt1aRKX\", VIRTUAL \"LjPsOybL7yWbgFeK\". A later 9-token trending page still had robinhood GIWAS \"6ZQXsy6sVtnHGGYi\" and KURO \"icpu326GTEvetoHN\". Latest pump rows use https://images.pump.fun/... and were fine (0/80 bad)."
+    },
+    {
+      "severity": "medium",
+      "endpoint": "GET /api/discovery?mode=trending&age=1w (robinhood rows) and GET /api/discovery?chain=robinhood&mode=trending&limit=20&age=1w",
+      "what": "Graduated Pons tokens on Robinhood are labeled dexId pumpswap and primaryDex PumpSwap. Chain, launch platform, logo, and sources say Pons. The PumpSwap dex filter does not return them.",
+      "evidence": "ORBIX 0x60633794dF09856B339eEA8bd741D749596b5230, GIWAS, KURO, PROV: chainId robinhood, dexId pumpswap, primaryDex PumpSwap, primaryDexLogo /pons.png, launchPlatform Pons V2, isPonsLaunch true, marketStage graduated, sources [Pons V2, Uniswap], primaryDexTradingUrl null, url https://ponsfamily.com/launchpad/<address>. ORBIX volume.h24 252824.47 vs liquidity.usd 23624.2, priceChange.h24 37.84. GET /api/discovery?dex=PumpSwap&chain=robinhood&mode=latest&limit=15&age=all \u2192 200, total 0. Fresh robinhood latest rows are dexId pons / primaryDex Pons V2."
+    },
+    {
+      "severity": "low",
+      "endpoint": "GET /api/discovery?mode=nope&age=1w and GET /api/discovery?mode=LATEST&limit=2&age=1w",
+      "what": "Unknown or wrong-case mode is silently coerced to trending. The body says mode trending, so the client is not told the mode was rejected.",
+      "evidence": "mode=nope \u2192 200 in 2.52s, mode \"trending\", total 10, limit 5000 (default). mode=LATEST \u2192 200 in 1.76s, total 10 trending, not the ~8000-row latest feed."
+    },
+    {
+      "severity": "low",
+      "endpoint": "GET /api/discovery?q= and GET /api/discovery?q=%20%20",
+      "what": "Empty or whitespace q is ignored and the default trending browse page is returned, not an empty search.",
+      "evidence": "200 in ~2.2\u20132.5s. Body is a trending page: success true, mode trending, age 1w, limit 5000, total 21, ~35KB. A 500-char q returned 200 {\"success\":true,\"total\":0,\"tokens\":[]} in 0.09s."
+    },
+    {
+      "severity": "low",
+      "endpoint": "GET /api/token-holders and GET /api/token-holders?address=not-an-address&chain=solana",
+      "what": "Missing and garbage addresses return HTTP 200 with totalHolders 0, so callers that only check status treat the failure as an empty holder set.",
+      "evidence": "No params: 200 in 0.002s, error \"Missing token address parameter\", totalHolders 0. not-an-address: 200 in 0.56s, message \"No holder data available for this SOLANA token address\", holders []. Valid JSON, not a 500."
+    },
+    {
+      "severity": "low",
+      "endpoint": "GET /api/discovery (list and validation errors)",
+      "what": "Invalid limit, age, and cursor still wait on the live-snapshot race before the 400 is returned. Not a hang (>20s), but error paths cost ~2.5s.",
+      "evidence": "limit=0 \u2192 400 in 2.52s {\"success\":false,\"error\":\"limit must be a finite integer from 1 to 5000\"}. age=banana \u2192 400 in 2.53s. cursor=%%% (raw and %25%25%25) \u2192 400 in 2.51s {\"error\":\"cursor is not valid\"}. Healthy list calls were 1.2\u20132.7s; health itself is 5ms."
+    }
+  ],
+  "samples": {
+    "health": {
+      "status": 200,
+      "time_s": 0.005,
+      "body": {
+        "status": "ok",
+        "timestamp": 1792868942464
+      }
+    },
+    "discoveryStats": {
+      "status": 200,
+      "time_s": 0.0088,
+      "bytes": 2203,
+      "totalIndexed": 8154,
+      "recordsToday": 3154
+    },
+    "timings": {
+      "trending_limit50_age1w_browse": {
+        "status": 200,
+        "time_s": 2.525,
+        "bytes": 17872,
+        "n": 10,
+        "total": 10
+      },
+      "latest_limit30_age1w_browse": {
+        "status": 200,
+        "time_s": 2.69,
+        "bytes": 32266,
+        "n": 30,
+        "total": 8008
+      },
+      "fresh_mints_limit30_age1w_browse": {
+        "status": 200,
+        "time_s": 2.666,
+        "bytes": 32271,
+        "n": 30,
+        "total": 8007
+      },
+      "latest_limit5000_age_all_browse": {
+        "status": 200,
+        "time_s": 2.787,
+        "bytes": 6328615,
+        "n": 5000,
+        "total": 8079,
+        "limit": 5000,
+        "json": true,
+        "nextCursor": true
+      },
+      "trending_limit999999": {
+        "status": 200,
+        "time_s": 2.524,
+        "bytes": 21332,
+        "n": 10,
+        "total": 10,
+        "limit_field": 5000,
+        "note": "clamped to 5000; did not hang"
+      },
+      "chain_arc_latest5_age_all": {
+        "status": 200,
+        "time_s": 2.289,
+        "n": 5,
+        "total": 2000,
+        "bad_chain": 0
+      },
+      "chain_robinhood_latest5_age1w": {
+        "status": 200,
+        "time_s": 1.286,
+        "n": 5,
+        "total": 3781,
+        "bad_chain": 0
+      },
+      "chain_solana_trending5_age1w": {
+        "status": 200,
+        "time_s": 1.729,
+        "n": 4,
+        "total": 4,
+        "bad_chain": 0
+      },
+      "argus_stats": {
+        "status": 200,
+        "time_s": 0.0052,
+        "bytes": 1164
+      },
+      "argus_launches_limit3": {
+        "status": 200,
+        "time_s": 0.006,
+        "n": 3,
+        "total": 11003
+      },
+      "parallel_15_trending_limit5": {
+        "statuses": {
+          "200": 15
+        },
+        "json_fail": 0,
+        "errors": [],
+        "min_s": 2.558,
+        "max_s": 2.651,
+        "wall_s": 2.659,
+        "bytes_each": 9120
+      }
+    },
+    "edges_that_did_not_fail": {
+      "limit_0": "400 JSON",
+      "limit_neg_nan_inf": "400 JSON",
+      "limit_1.9": "200 limit floored to 1",
+      "age_banana_1W_ALL": "400 JSON",
+      "cursor_percent_and_bad_rank": "400 cursor is not valid",
+      "q_500_chars": "200 total 0",
+      "q_percent_regex_script": "200 total 0, no 500",
+      "chain_notachain": "200 total 0",
+      "chain_SOLANA": "200 solana rows",
+      "POST /api/discovery": "406 {\"error\":\"Only HTML requests are supported here\"}",
+      "fake_argus_sample_0x4D1892A0\u2026": "200 total 0, not in the live feed",
+      "pagination_latest_limit30": "page2 200, overlap 0; totals drifted 8008\u21928064 because the index is live"
+    },
+    "latestToken": {
+      "endpoint": "GET /api/discovery?mode=latest&limit=30&age=1w&shape=browse",
+      "symbol": "A",
+      "name": "DacityCoin",
+      "chainId": "solana",
+      "dexId": "pumpfun",
+      "address": "2uKFG9tCVqbxC4meRmetj41tAYCcA7gKKWze2Fknpump",
+      "priceUsd": "0.000003769",
+      "priceUsd_type": "string",
+      "priceChange": "key absent on both browse and raw (not null, not a number). All 30 latest browse rows were missing priceChange. On the age=all 5000 page, 4937/5000 had no priceChange; 63 had a numeric h24.",
+      "url": "absent on shape=browse because it equals primaryDexTradingUrl. Raw url is https://pump.fun/coin/2uKFG9tCVqbxC4meRmetj41tAYCcA7gKKWze2Fknpump. 0/30 latest browse rows included url; on the 5000 page url was present on 2644 rows, matching the robinhood count.",
+      "marketCap": 3769.008,
+      "marketCap_type": "number",
+      "marketCap_missing_on_latest30": 12,
+      "priceUsd_missing_on_latest30": 12,
+      "liquidity_usd": 469.3,
+      "volume_h24": 469.3,
+      "volumeComplete": false
+    },
+    "volumeVsLiquidity": {
+      "latest20_newest": "9 of the 20 newest rows with both numbers set had volume.h24 == liquidity.usd (examples 100.51, 99.78, 399.41). All were Pump.fun, age about 0, volumeComplete false.",
+      "latest30_browse": "18/30 equal, all under ~0.02h old.",
+      "latest5000_age_all": "2942/5000 equal, but vol_eq_liq among tokens older than 24h with volume>=10000 was 0. Only 3 such older large-volume rows were in that page.",
+      "older_counterexample": "ORBIX age ~44.5h, volumeComplete true, volume.h24 252824.47, liquidity.usd 23624.2, not equal. Trending rows with age>24h and large volume also differed.",
+      "flagged": false,
+      "note": "Equality is the incomplete bonding-curve reading, not the stored volume of older liquid markets."
+    },
+    "addressLookup": {
+      "solana_mint": "2uKFG9tCVqbxC4meRmetj41tAYCcA7gKKWze2Fknpump",
+      "q": {
+        "status": 200,
+        "time_s": 0.026,
+        "hit": true,
+        "n": 1,
+        "symbol": "A"
+      },
+      "address": {
+        "status": 200,
+        "time_s": 0.016,
+        "hit": true,
+        "n": 1
+      },
+      "q_lowercased_mint": {
+        "status": 200,
+        "time_s": 0.015,
+        "hit": true,
+        "n": 1,
+        "note": "unique case-fold returned the same mint"
+      },
+      "evm": "0x60633794dF09856B339eEA8bd741D749596b5230 ORBIX robinhood",
+      "evm_q": {
+        "status": 200,
+        "time_s": 0.012,
+        "hit": true,
+        "n": 1
+      },
+      "evm_address": {
+        "status": 200,
+        "time_s": 0.013,
+        "hit": true,
+        "n": 1
+      },
+      "evm_q_upper": {
+        "status": 200,
+        "time_s": 0.013,
+        "hit": true,
+        "n": 1
+      }
+    },
+    "arcLatestPriceTemplate": {
+      "endpoint": "GET /api/discovery?chain=arc&mode=latest&limit=80&age=all",
+      "n": 80,
+      "total": 2011,
+      "note": "59/80 shared priceUsd 0.000002480744058505, marketCap 2480.744058505, liquidity 1898.79; 17/80 shared 0.000002 / 2000 / 1530.83. volume null on 77/80, priceChange null on 80/80. Not the hardcoded 0.0000025/2500/12500 placeholder, and exact placeholder addresses were not in the feed. Treated as shared untraded genesis curve, not filed as a bug."
+    },
+    "wsolLookup": {
+      "endpoint": "GET /api/discovery?q=So11111111111111111111111111111111111111112",
+      "status": 200,
+      "n": 1,
+      "note": "Only the SOL/USDC pair where WSOL is the base. Did not dump every SOL pair."
+    }
+  }
+}

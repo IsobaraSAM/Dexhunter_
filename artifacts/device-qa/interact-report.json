@@ -1,0 +1,1174 @@
+{
+  "bugs": [
+    {
+      "severity": "medium",
+      "viewport": "390x844",
+      "step": "filters",
+      "what": "Window or list count does not match the filter apply promise",
+      "evidence": "button \"Show 143 results\" but visible rows=100, window=\"Loading this window\", data-loaded=173"
+    },
+    {
+      "severity": "medium",
+      "viewport": "390x844",
+      "step": "filters",
+      "what": "Filters drawer has no clickable backdrop, so backdrop dismiss does nothing",
+      "evidence": "panel box {\"x\":1,\"y\":0,\"width\":389,\"height\":832}; click at x=4 left the drawer open"
+    },
+    {
+      "severity": "medium",
+      "viewport": "390x844",
+      "step": "console",
+      "what": "Console or page error",
+      "evidence": "Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+    },
+    {
+      "severity": "high",
+      "viewport": "768x1024",
+      "step": "theme",
+      "what": "Theme flow threw",
+      "evidence": "locator.click: Timeout 5000ms exceeded.\nCall log:\n  - waiting for locator('#btn_toggle_theme_mobile').first()\n    - locator resolved to <button type=\"button\" id=\"btn_toggle_theme_mobile\" aria-label=\"Toggle Theme Mode\" title=\"Toggle Theme Mode (Current: Dark)\" class=\"flex items-center justify-center transition-all border outline-none cursor-pointer rounded-lg w-8 h-8 relative before:absolute before:-inset-2 sm:before:hidden touch-manipulation bg-[#1f202e] border-zinc-800 text-yellow-400\">…</butto"
+    },
+    {
+      "severity": "medium",
+      "viewport": "768x1024",
+      "step": "console",
+      "what": "Console or page error",
+      "evidence": "Failed to load resource: net::ERR_BLOCKED_BY_RESPONSE.NotSameOrigin"
+    }
+  ],
+  "checks": [
+    {
+      "viewport": "390x844",
+      "step": "load",
+      "detail": {
+        "tokens": 37,
+        "first": [
+          {
+            "view": "compact-mobile",
+            "symbol": "TRUMP",
+            "name": "TRUMP",
+            "address": "3YYqFkPaob7SzUCyk59DGVhPZK1LN9odKMJc1uy3pump",
+            "mcLabel": "MC",
+            "mc": "$63.2K",
+            "price": "TRUMP",
+            "blurb": "1 TRUMP Trump Coin $0.0 ₃ 6347 +23.5% V: $4.62M · MC: $63.2K"
+          },
+          {
+            "view": "compact-mobile",
+            "symbol": "EVMZONE",
+            "name": "EVMZONE",
+            "address": "0xE51a1e57E3C1f037BFc0154918000419636FB1F0",
+            "mcLabel": "MC",
+            "mc": "$12.38M",
+            "price": "EVMZONE",
+            "blurb": "2 EVMZONE evmzone $0.01238 +366561% V: $1.95M · MC: $12.38M"
+          },
+          {
+            "view": "compact-mobile",
+            "symbol": "GDC",
+            "name": "GDC",
+            "address": "4ipcoJ37nXNXs66SR9MVYTz6vwUdqsXYfLD4vYE6pump",
+            "mcLabel": "MC",
+            "mc": "$540.4K",
+            "price": "GDC",
+            "blurb": "3 GDC GrandDacityCoin $0.000545 +887.0% V: $2.60M · MC: $540.4K"
+          }
+        ],
+        "window": {
+          "text": "37 in this window",
+          "total": "37",
+          "loaded": "37",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": false,
+          "theme": "dark"
+        },
+        "hydrationWaitMs": 3225
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "search-pepe",
+      "detail": {
+        "opened": "#btn_toggle_search_mobile",
+        "resultCount": 100,
+        "pepeHits": 100,
+        "symbols": [
+          "TRUMPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPX",
+          "PEPE",
+          "PEPE"
+        ],
+        "names": [
+          "TRUMPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPX",
+          "PEPE",
+          "PEPE"
+        ],
+        "emptyNote": null
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "search-clear",
+      "detail": {
+        "clearBtn": "#btn_clear_search_collapsed",
+        "restored": 31,
+        "window": {
+          "text": "150 in this window",
+          "total": "150",
+          "loaded": "31",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": false,
+          "theme": "dark"
+        },
+        "queryLeft": {
+          "collapsed": null,
+          "input": "",
+          "windowVisible": true
+        }
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "search-address",
+      "detail": {
+        "address": "3CQpA59r3Tw9qpwiVHEcDxj2HGoHXiX1gsn7YNEapump",
+        "reopen": "already-open",
+        "resultCount": 1,
+        "hit": true,
+        "symbols": [
+          "TRUMPE:3CQpA59r3Tw9qpwiVHEcDxj2HGoHXiX1gsn7YNEapump"
+        ],
+        "empty2": null
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "filters-all-time",
+      "detail": {
+        "applyText": "Show 143 results",
+        "before": "167 in this window",
+        "after": "Loading this window",
+        "beforeLoaded": "143",
+        "afterLoaded": "173",
+        "beforeCount": 100,
+        "afterCount": 100,
+        "drawerClosed": true,
+        "url": "http://127.0.0.1:8080/?age=all"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "filters-reset",
+      "detail": {
+        "window": "173 in this window",
+        "rows": 100,
+        "drawerOpen": 0
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "filters-backdrop",
+      "detail": {
+        "panelBox": {
+          "x": 1,
+          "y": 0,
+          "width": 389,
+          "height": 832
+        },
+        "backdropClosed": false
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "filters-close-button",
+      "detail": {
+        "closeBox": {
+          "x": 350,
+          "y": 14,
+          "width": 24,
+          "height": 24
+        },
+        "still": 0
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "sort-marketcap",
+      "detail": {
+        "label": "Market Cap",
+        "first": {
+          "symbol": "EVMZONE",
+          "mc": "$12.70M",
+          "mcLabel": "MC",
+          "cap": 12700000
+        },
+        "second": {
+          "symbol": "Kimchi",
+          "mc": "$5.86M",
+          "mcLabel": "MC",
+          "cap": 5860000
+        },
+        "modal": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 832
+        }
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "theme-light",
+      "detail": {
+        "theme": "light",
+        "toggled": "#btn_toggle_theme_mobile",
+        "contrastHits": []
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "theme-dark",
+      "detail": {
+        "theme": "dark"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "export",
+      "detail": {
+        "opened": "#btn_export_csv_mobile",
+        "box": {
+          "x": 12,
+          "y": 241.25,
+          "width": 366,
+          "height": 349.5
+        },
+        "buttons": [
+          {
+            "sel": "#btn_cancel_csv_export",
+            "x": 56,
+            "y": 540,
+            "w": 65,
+            "h": 34,
+            "cut": false
+          },
+          {
+            "sel": "#btn_confirm_csv_export",
+            "x": 255,
+            "y": 541,
+            "w": 106,
+            "h": 32,
+            "cut": false
+          },
+          {
+            "sel": "#btn_confirm_json_export",
+            "x": 131,
+            "y": 541,
+            "w": 114,
+            "h": 32,
+            "cut": false
+          },
+          {
+            "sel": "#btn_close_csv_export_modal",
+            "x": 331,
+            "y": 261,
+            "w": 30,
+            "h": 30,
+            "cut": false
+          }
+        ],
+        "cut": false,
+        "download": null
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "pause",
+      "detail": {
+        "before": "false",
+        "beforeLabel": "Pause live feed",
+        "mid": "true",
+        "midLabel": "Resume live feed",
+        "after": "false",
+        "afterLabel": "Pause live feed"
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "pagination",
+      "detail": {
+        "mode": "next-page",
+        "before": {
+          "text": "176 in this window",
+          "total": "176",
+          "loaded": "152",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": true,
+          "theme": "dark"
+        },
+        "after": {
+          "text": "176 in this window",
+          "total": "176",
+          "loaded": "152",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": true,
+          "theme": "dark"
+        },
+        "beforeCount": 100,
+        "afterCount": 52,
+        "grew": true
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "tabs",
+      "detail": {
+        "trendingOn": true,
+        "trendingWindow": "176 in this window",
+        "trendingFirst": [
+          "TITCOIN:2u43KZu9GJ1viYrPQjGW2RszCGh6BKu5ZAjbqqprpump",
+          "WarHound:49rKkm2MDMeogCctyBBEua1UkCRtM3T4BaxT3BDgpump",
+          "BANANITO:Gceo4mLjNcEedy317ywXyrZeraeT3weNmRkzka7jpump"
+        ],
+        "mintsActive": true,
+        "mintsWindow": "600 loaded of 8,050 in this window",
+        "mintsError": null,
+        "mintsFirst": [
+          "swordlon:58dhikS1m2BRCxjbAGQKCFzaRyujgP3MyKntX3hTpump",
+          "Ð:6pokjVg5yW1RtxJig2K7N3hi17m6N1z4DRQStxRLMaVJ",
+          "swordlon:CR6xhuARZR3wQeXBjpgYricUZ9fc48QtxaeZZa9HPVjf"
+        ],
+        "mintsCount": 100,
+        "latestActive": true,
+        "latestWindow": "600 loaded of 8,066 in this window",
+        "latestError": null,
+        "latestFirst": [
+          "swordlon:58dhikS1m2BRCxjbAGQKCFzaRyujgP3MyKntX3hTpump",
+          "Ð:6pokjVg5yW1RtxJig2K7N3hi17m6N1z4DRQStxRLMaVJ",
+          "swordlon:CR6xhuARZR3wQeXBjpgYricUZ9fc48QtxaeZZa9HPVjf"
+        ],
+        "latestCount": 100
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "layout-390-scroll",
+      "detail": {
+        "pageScroll": {
+          "scrollW": 390,
+          "clientW": 390,
+          "bodyScrollW": 390
+        },
+        "reach": {
+          "y": 7307,
+          "max": 7307,
+          "footerTop": 739,
+          "footerBottom": 844,
+          "innerH": 844,
+          "reachable": true
+        }
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "layout-390-header",
+      "detail": {
+        "taps": [
+          {
+            "id": "btn_pause_feed",
+            "w": 28,
+            "h": 28,
+            "x": 12,
+            "y": 8,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "svg.[object SVGAnimatedString]"
+          },
+          {
+            "id": "btn_brand_home_refresh",
+            "w": 111,
+            "h": 26,
+            "x": 48,
+            "y": 9,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "H1.font-display text-base sm:text-lg font-b"
+          },
+          {
+            "id": "btn_toggle_search_mobile",
+            "w": 32,
+            "h": 32,
+            "x": 232,
+            "y": 6,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_toggle_search_mobile"
+          },
+          {
+            "id": "btn_export_csv_mobile",
+            "w": 32,
+            "h": 32,
+            "x": 270,
+            "y": 6,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_export_csv_mobile"
+          },
+          {
+            "id": "btn_toggle_theme_mobile",
+            "w": 32,
+            "h": 32,
+            "x": 308,
+            "y": 6,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_toggle_theme_mobile"
+          },
+          {
+            "id": "btn_open_settings_mobile",
+            "w": 32,
+            "h": 32,
+            "x": 346,
+            "y": 6,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_open_settings_mobile"
+          },
+          {
+            "id": "tab_trending",
+            "w": 117,
+            "h": 40,
+            "x": 15,
+            "y": 49,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "SPAN."
+          },
+          {
+            "id": "tab_latest",
+            "w": 117,
+            "h": 40,
+            "x": 136,
+            "y": 49,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "SPAN."
+          },
+          {
+            "id": "tab_fresh_mints",
+            "w": 117,
+            "h": 40,
+            "x": 258,
+            "y": 49,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "SPAN."
+          },
+          {
+            "id": "btn_open_filters_modal",
+            "w": 76,
+            "h": 38,
+            "x": 16,
+            "y": 354,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_open_filters_modal"
+          },
+          {
+            "id": "btn_open_sort_modal",
+            "w": 94,
+            "h": 38,
+            "x": 98,
+            "y": 354,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_open_sort_modal"
+          },
+          {
+            "id": "btn_view_cards",
+            "w": 36,
+            "h": 36,
+            "x": 253,
+            "y": 355,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_view_cards"
+          },
+          {
+            "id": "btn_view_compact",
+            "w": 36,
+            "h": 36,
+            "x": 291,
+            "y": 355,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_view_compact"
+          },
+          {
+            "id": "btn_refresh_raw",
+            "w": 38,
+            "h": 36,
+            "x": 336,
+            "y": 355,
+            "zero": false,
+            "offscreen": false,
+            "covered": false,
+            "hit": "btn_refresh_raw"
+          }
+        ]
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "layout-390-compact-price",
+      "detail": {
+        "clip": [
+          {
+            "price": {
+              "text": "$0.0 4 284",
+              "left": 215,
+              "right": 268,
+              "top": 562,
+              "bottom": 574,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 272,
+              "right": 294,
+              "top": 560,
+              "bottom": 575,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          },
+          {
+            "price": {
+              "text": "N/A",
+              "left": 231,
+              "right": 252,
+              "top": 632,
+              "bottom": 648,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 256,
+              "right": 278,
+              "top": 633,
+              "bottom": 648,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          },
+          {
+            "price": {
+              "text": "N/A",
+              "left": 231,
+              "right": 252,
+              "top": 705,
+              "bottom": 721,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 256,
+              "right": 278,
+              "top": 706,
+              "bottom": 721,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          },
+          {
+            "price": {
+              "text": "N/A",
+              "left": 231,
+              "right": 252,
+              "top": 778,
+              "bottom": 794,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 256,
+              "right": 278,
+              "top": 779,
+              "bottom": 794,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          },
+          {
+            "price": {
+              "text": "N/A",
+              "left": 231,
+              "right": 252,
+              "top": 851,
+              "bottom": 867,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 256,
+              "right": 278,
+              "top": 852,
+              "bottom": 867,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          },
+          {
+            "price": {
+              "text": "$0.0 4 3015",
+              "left": 212,
+              "right": 271,
+              "top": 927,
+              "bottom": 939,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "percent": {
+              "text": "0%",
+              "left": 275,
+              "right": 297,
+              "top": 925,
+              "bottom": 940,
+              "outsideCenter": false,
+              "offViewport": false,
+              "clippedBy": null
+            },
+            "center": {
+              "left": 192,
+              "right": 317,
+              "w": 125
+            }
+          }
+        ]
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "layout-390-cards",
+      "detail": {
+        "kids": [
+          {
+            "w": 374,
+            "left": 8,
+            "right": 382,
+            "wider": false
+          },
+          {
+            "w": 374,
+            "left": 8,
+            "right": 382,
+            "wider": false
+          },
+          {
+            "w": 374,
+            "left": 8,
+            "right": 382,
+            "wider": false
+          }
+        ],
+        "scrollW": 390,
+        "clientW": 390,
+        "vw": 390
+      }
+    },
+    {
+      "viewport": "390x844",
+      "step": "holders",
+      "detail": {
+        "hasUndefined": false,
+        "hasNaN": false,
+        "spinners": [],
+        "sample": [
+          "vrl CA NEW N/A 3m ago Bonding Curve 0% LIQUIDITY — 24H VOL — FDV — 0% 0% Holders & Supply Analysis No socials listed",
+          "Holders & Supply Analysis",
+          "Holders & Supply Analysis"
+        ]
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "load",
+      "detail": {
+        "tokens": 38,
+        "first": [
+          {
+            "view": "cards",
+            "symbol": "TRUMP",
+            "name": "Trump Coin",
+            "address": "3YYqFkPaob7SzUCyk59DGVhPZK1LN9odKMJc1uy3pump",
+            "mcLabel": "MARKET CAP",
+            "mc": "$85K",
+            "blurb": "TRUMP | Trump Coin | CA | $0.0 | 3 | 8521 | 16h 23m ago | PumpSwap | LIQUIDITY | $27K | 24H VOL | $4.6M | MARKET CAP | $85K"
+          },
+          {
+            "view": "cards",
+            "symbol": "EVMZONE",
+            "name": "evmzone",
+            "address": "0xE51a1e57E3C1f037BFc0154918000419636FB1F0",
+            "mcLabel": "MARKET CAP",
+            "mc": "$13.2M",
+            "blurb": "EVMZONE | evmzone | CA | $0.01317 | 7h 6m ago | Uniswap | LIQUIDITY | $221K | 24H VOL | $2.0M | MARKET CAP | $13.2M | ▲ +390078% | Holders & Supply Analysis"
+          },
+          {
+            "view": "cards",
+            "symbol": "GDC",
+            "name": "GrandDacityCoin",
+            "address": "4ipcoJ37nXNXs66SR9MVYTz6vwUdqsXYfLD4vYE6pump",
+            "mcLabel": "MARKET CAP",
+            "mc": "$491K",
+            "blurb": "GDC | GrandDacityCoin | CA | $0.000495 | 5h 27m ago | PumpSwap | LIQUIDITY | $64K | 24H VOL | $2.6M | MARKET CAP | $491K | ▲ +797.0% | Holders & Supply Analysis"
+          }
+        ],
+        "window": {
+          "text": "38 in this window",
+          "total": "38",
+          "loaded": "38",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": false,
+          "theme": "dark"
+        },
+        "hydrationWaitMs": 4661
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "search-pepe",
+      "detail": {
+        "opened": "#btn_toggle_search_mobile",
+        "resultCount": 100,
+        "pepeHits": 100,
+        "symbols": [
+          "TRUMPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPE",
+          "PEPX",
+          "PEPE",
+          "PEPE"
+        ],
+        "names": [
+          "Trump Pepe",
+          "Pepe",
+          "Pepe",
+          "Pepe",
+          "Pepe",
+          "PepeX",
+          "Pepe",
+          ""
+        ],
+        "emptyNote": null
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "search-clear",
+      "detail": {
+        "clearBtn": "#btn_clear_search_collapsed",
+        "restored": 75,
+        "window": {
+          "text": "150 in this window",
+          "total": "150",
+          "loaded": "75",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": false,
+          "theme": "dark"
+        },
+        "queryLeft": {
+          "collapsed": null,
+          "input": "",
+          "windowVisible": true
+        }
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "search-address",
+      "detail": {
+        "address": "5TPRGZUiL3VUaHrQGcSb8wSodkmWm8j9JqqvSdBWkRG5",
+        "reopen": "already-open",
+        "resultCount": 1,
+        "hit": true,
+        "symbols": [
+          "PEPE:5TPRGZUiL3VUaHrQGcSb8wSodkmWm8j9JqqvSdBWkRG5"
+        ],
+        "empty2": null
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "filters-all-time",
+      "detail": {
+        "applyText": "Show 1 results",
+        "before": "1 loaded of 194 in this window",
+        "after": "Loading this window",
+        "beforeLoaded": "1",
+        "afterLoaded": "1",
+        "beforeCount": 1,
+        "afterCount": 1,
+        "drawerClosed": true,
+        "url": "http://127.0.0.1:8080/?age=all"
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "filters-reset",
+      "detail": {
+        "window": "175 in this window",
+        "rows": 100,
+        "drawerOpen": 0
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "filters-backdrop",
+      "detail": {
+        "panelBox": {
+          "x": 321,
+          "y": 0,
+          "width": 447,
+          "height": 1008
+        },
+        "backdropClosed": true
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "filters-close-button",
+      "detail": {
+        "closeBox": {
+          "x": 728,
+          "y": 14,
+          "width": 24,
+          "height": 24
+        },
+        "still": 0
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "sort-marketcap",
+      "detail": {
+        "label": "Market Cap",
+        "first": {
+          "symbol": "USDF",
+          "mc": "$574.7M",
+          "mcLabel": "MARKET CAP",
+          "cap": 574700000
+        },
+        "second": {
+          "symbol": "ROR",
+          "mc": "$348.4M",
+          "mcLabel": "MARKET CAP",
+          "cap": 348400000
+        },
+        "modal": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 1008
+        }
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "export",
+      "detail": {
+        "opened": "#btn_export_csv_mobile",
+        "box": {
+          "x": 160,
+          "y": 328.1875,
+          "width": 448,
+          "height": 351.625
+        },
+        "buttons": [
+          {
+            "sel": "#btn_cancel_csv_export",
+            "x": 286,
+            "y": 629,
+            "w": 65,
+            "h": 34,
+            "cut": false
+          },
+          {
+            "sel": "#btn_confirm_csv_export",
+            "x": 485,
+            "y": 630,
+            "w": 106,
+            "h": 32,
+            "cut": false
+          },
+          {
+            "sel": "#btn_confirm_json_export",
+            "x": 361,
+            "y": 630,
+            "w": 114,
+            "h": 32,
+            "cut": false
+          },
+          {
+            "sel": "#btn_close_csv_export_modal",
+            "x": 526,
+            "y": 354,
+            "w": 61,
+            "h": 30,
+            "cut": false
+          }
+        ],
+        "cut": false,
+        "download": null
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "pause",
+      "detail": {
+        "before": "false",
+        "beforeLabel": "Pause live feed",
+        "mid": "true",
+        "midLabel": "Resume live feed",
+        "after": "false",
+        "afterLabel": "Pause live feed"
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "pagination",
+      "detail": {
+        "mode": "next-page",
+        "before": {
+          "text": "180 in this window",
+          "total": "180",
+          "loaded": "156",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": true,
+          "theme": "dark"
+        },
+        "after": {
+          "text": "180 in this window",
+          "total": "180",
+          "loaded": "156",
+          "more": "0",
+          "error": null,
+          "loadMoreVisible": false,
+          "nextVisible": true,
+          "theme": "dark"
+        },
+        "beforeCount": 100,
+        "afterCount": 56,
+        "grew": true
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "tabs",
+      "detail": {
+        "trendingOn": true,
+        "trendingWindow": "180 in this window",
+        "trendingFirst": [
+          "OBAMA2028:81U3nE9kuvokAKjWnVG3ZkUPrJaT7qx1pRy36zpbpump",
+          "OBAMA2028:737VShmjEkKzuLVdexXrmLhunPe5H43hY3kVyxDBpump",
+          "ZION:CAxuUrCYCT9f52a2BzG9iovPc5LtvjkDeLD2pgUhVgUp"
+        ],
+        "mintsActive": true,
+        "mintsWindow": "5,000 loaded of 8,036 in this window",
+        "mintsError": null,
+        "mintsFirst": [
+          "INUX:7PjdXpr4JiDTEKhVWVEgrjVcE2QN6gBzdCQXw25Bpump",
+          "Baby:4qQyucb6yfRFiLkvcCjEkzU1ngQgdHhx9JquosSPGvmo",
+          "Baby:7K9Q2Cx1zbAHdaVdtpNTXJPSMW5BsTt9Q44NwifZpump"
+        ],
+        "mintsCount": 100,
+        "latestActive": true,
+        "latestWindow": "600 loaded of 8,090 in this window",
+        "latestError": null,
+        "latestFirst": [
+          "INUX:7PjdXpr4JiDTEKhVWVEgrjVcE2QN6gBzdCQXw25Bpump",
+          "Baby:4qQyucb6yfRFiLkvcCjEkzU1ngQgdHhx9JquosSPGvmo",
+          "Baby:7K9Q2Cx1zbAHdaVdtpNTXJPSMW5BsTt9Q44NwifZpump"
+        ],
+        "latestCount": 100
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "layout-768",
+      "detail": {
+        "pageScroll": {
+          "scrollW": 768,
+          "clientW": 768,
+          "bodyScrollW": 768
+        },
+        "minWidth": "980px",
+        "scroller": {
+          "w": 718,
+          "scrollW": 1142,
+          "clientW": 718
+        },
+        "tableScrollW": 1142,
+        "cells": [
+          {
+            "text": "1",
+            "left": 25,
+            "right": 73,
+            "w": 48,
+            "sticky": true
+          },
+          {
+            "text": "NUTTY NEW PEANUT",
+            "left": 73,
+            "right": 280,
+            "w": 207,
+            "sticky": true
+          },
+          {
+            "text": "$0.0 4 2836",
+            "left": 280,
+            "right": 363,
+            "w": 84,
+            "sticky": false
+          },
+          {
+            "text": "0%",
+            "left": 363,
+            "right": 462,
+            "w": 99,
+            "sticky": false
+          }
+        ],
+        "overlapAtRest": 0
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "layout-768-scrolled",
+      "detail": {
+        "scrollLeft": 160,
+        "cells": [
+          {
+            "left": 25,
+            "right": 73,
+            "sticky": true,
+            "text": "1"
+          },
+          {
+            "left": 73,
+            "right": 280,
+            "sticky": true,
+            "text": "NUTTY NEW PEANUT"
+          },
+          {
+            "left": 120,
+            "right": 203,
+            "sticky": false,
+            "text": "$0.0 4 2836"
+          },
+          {
+            "left": 203,
+            "right": 302,
+            "sticky": false,
+            "text": "0%"
+          }
+        ],
+        "priceCovered": 160,
+        "priceVisible": false
+      }
+    },
+    {
+      "viewport": "768x1024",
+      "step": "holders",
+      "detail": {
+        "hasUndefined": false,
+        "hasNaN": false,
+        "spinners": [],
+        "sample": [
+          "FININU NEW Finance Inu",
+          "FININU NEW Finance Inu",
+          "Finance Inu"
+        ]
+      }
+    }
+  ]
+}

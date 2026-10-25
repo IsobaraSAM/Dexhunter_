@@ -11,7 +11,10 @@ export const CHAIN_COVERAGE = {
   },
   ethereum: { mode: "search", reader: "DexScreener search. No factory subscription." },
   base: { mode: "search", reader: "DexScreener search. No factory subscription." },
-  bsc: { mode: "search", reader: "DexScreener search. No factory subscription." },
+  bsc: {
+    mode: "partial",
+    reader: "Four.meme V1, Four.meme V2, and OpenFour are read from BNB Chain logs. The factory deployment block is unverified because public RPCs reject archive state, so the first scan backfills a recent window and then follows the cursor. Other BSC rows are still DexScreener search. Price is quote × supply only for BNB, WBNB, USDT, and USDC.",
+  },
   arbitrum: { mode: "search", reader: "DexScreener search. No factory subscription." },
   polygon: { mode: "search", reader: "DexScreener search. No factory subscription." },
   avalanche: { mode: "search", reader: "DexScreener search. No factory subscription." },

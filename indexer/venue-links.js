@@ -6,6 +6,7 @@
 
 const ARGUS_PAGE = "https://argus.world/token";
 const PONS_PAGE = "https://ponsfamily.com/launchpad";
+const FOUR_PAGE = "https://four.meme/token";
 
 export function argusLaunchpadUrl(address) {
   const addr = text(address);
@@ -31,8 +32,21 @@ export function isArgusToken(token) {
   return dex.includes("argus");
 }
 
+export function fourMemeLaunchpadUrl(address) {
+  const addr = text(address);
+  if (!/^0x[a-fA-F0-9]{40}$/.test(addr)) return null;
+  return `${FOUR_PAGE}/${addr}`;
+}
+
+export function isFourMemeToken(token) {
+  if (!token) return false;
+  if (token.isFourMemeLaunch || token.isOpenFourLaunch) return true;
+  const platform = text(token.launchPlatform).toLowerCase();
+  return platform === "four.meme" || platform === "four.meme v1" || platform === "openfour";
+}
+
 export function isPumpToken(token) {
-  if (!token || isPonsToken(token) || isArgusToken(token)) return false;
+  if (!token || isPonsToken(token) || isArgusToken(token) || isFourMemeToken(token)) return false;
   const chain = text(token.chainId).toLowerCase();
   if (chain && chain !== "solana") return false;
   const dex = text(token.primaryDex || token.dexId || token.launchPlatform).toLowerCase();
@@ -54,7 +68,7 @@ export function ponsLaunchpadUrl(address) {
 export function isRejectedTradeUrl(token, url) {
   if (!url) return false;
   const chain = text(token?.chainId).toLowerCase();
-  const owned = chain === "robinhood" || chain === "arc" || isPonsToken(token) || isArgusToken(token);
+  const owned = chain === "robinhood" || chain === "arc" || isPonsToken(token) || isArgusToken(token) || isFourMemeToken(token);
   if (!owned) return false;
   return /uniswap\.org|arguspad\.io/i.test(String(url));
 }
@@ -63,6 +77,7 @@ export function isRejectedTradeUrl(token, url) {
 export function dexTradeUrl(token) {
   if (isPonsToken(token)) return null;
   if (isArgusToken(token)) return argusLaunchpadUrl(token?.baseToken?.address || token?.address);
+  if (isFourMemeToken(token)) return fourMemeLaunchpadUrl(token?.baseToken?.address || token?.address);
   const chain = text(token?.chainId).toLowerCase();
   if (chain === "robinhood" || chain === "arc") return null;
   return undefined;
@@ -73,6 +88,7 @@ export function actionHref(token) {
   if (isPonsToken(token)) return ponsLaunchpadUrl(token?.baseToken?.address || token?.address);
   if (isArgusToken(token)) return argusLaunchpadUrl(token?.baseToken?.address || token?.address);
   if (isPumpToken(token)) return pumpLaunchpadUrl(token?.baseToken?.address || token?.address);
+  if (isFourMemeToken(token)) return fourMemeLaunchpadUrl(token?.baseToken?.address || token?.address);
   return undefined;
 }
 
