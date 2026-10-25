@@ -1,0 +1,11 @@
+{
+  "name": "traced-node-modules",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "bufferutil": "4.1.0",
+    "node-gyp-build": "4.8.4",
+    "utf-8-validate": "6.0.6"
+  }
+}

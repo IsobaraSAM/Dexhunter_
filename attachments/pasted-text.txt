@@ -1,0 +1,148 @@
+DexHunter: Social Link Classification and Full-Stack Filter Audit
+
+You are working on the existing DexHunter codebase. Your task is to improve the Socials and Trust section, specifically the X social-link filter, and audit the existing filters to ensure the frontend and backend behave consistently.
+
+1. Inspect before changing anything
+
+First, inspect the existing repository, current deployed website, filter components, social-link data structures, API routes, backend aggregation and filtering logic, and existing tests.
+
+Establish how social links currently flow through the application:
+
+Source data → normalization → backend filtering → API response → frontend filter state → displayed links and icons.
+
+Identify the correct integration points before editing. Determine how the application currently represents X profile URLs versus individual X content URLs.
+
+Do not assume the current architecture, filenames, framework, or implementation. Work with what is already there.
+
+2. Separate X Profiles from X Posts
+
+The goal is simple: help users distinguish an X account from a link to content on X.
+
+There are only two categories:
+
+- X Profiles: Links that lead to an X account or profile.
+- X Posts: Links that lead to content on X, including original posts, replies, comments, quote-posts and reposts.
+
+Do not create separate filter categories for replies, comments, quotes or reposts. All of them belong under X Posts.
+
+Icons
+
+- X Profiles use the original X logo.
+- X Posts use a feather icon to distinguish content links from profile links.
+
+The icons communicate the destination type. They do not change the destination or invent new link functionality.
+
+Preserve the original URL and its query parameters where necessary. Do not rewrite links to point to different destinations.
+
+Classify links using URL structure and available source metadata. Do not assume every URL containing "x.com" or "twitter.com" is a profile. Handle ambiguous or unsupported URLs conservatively rather than falsely classifying them.
+
+3. Update the existing Socials and Trust interface
+
+Find the existing Socials and Trust section. Integrate the change directly into its current design.
+
+When the user clicks the existing X filter, expand a dropdown or nested menu directly underneath X, within the existing section.
+
+The submenu should contain:
+
+- X Profiles
+- X Posts
+
+Users should be able to expand and collapse the submenu and select either or both options.
+
+Follow the site's existing component patterns, spacing, typography, icon sizing, borders, dropdown behaviour and responsive layout. The change must feel native to DexHunter, not like a separately designed component.
+
+Verify both light and dark themes. Check text contrast, backgrounds, borders, hover states, selected states, focus states, clipping, stacking order and mobile layout.
+
+Do not introduce inconsistent black or white surfaces, broken spacing, awkward dropdown positioning or styling that clashes with the rest of the website.
+
+Do not redesign unrelated parts of DexHunter.
+
+4. Make the filters work throughout the application
+
+Do not stop after updating the UI.
+
+Trace the existing filter implementation from the user's selection through frontend state, request parameters, backend logic and returned data.
+
+Implement the X Profile and X Post filters end to end using the existing architecture.
+
+Requirements:
+
+- Selecting X Profiles returns matching tokens with a valid X profile link.
+- Selecting X Posts returns matching tokens with a valid X content link.
+- Selecting both uses OR logic: a token qualifies if it matches either selected category.
+- Selecting neither must follow the existing filter system's established default behaviour.
+- Combine the new filters correctly with existing chain, search, liquidity, volume, age and other supported filters.
+- Preserve existing pagination, sorting, deduplication and discovery behaviour.
+- Ensure the frontend and backend agree on the meaning of every filter.
+- Handle missing, malformed and ambiguous social-link data safely.
+- Do not treat an arbitrary X URL as proof that a token has both a profile and a post.
+- Do not fabricate links, social metadata or token information.
+
+If the existing backend cannot support a reliable distinction because the source data is insufficient, identify the actual limitation and fix it at the correct integration point where feasible. Do not disguise missing data with frontend-only logic.
+
+5. Audit the other existing filters
+
+Inspect every existing filter, not just the X filter.
+
+Determine which filters are functional, which only change their visual state, which send incorrect parameters, and which are implemented inconsistently between the frontend and backend.
+
+Create an inventory of the findings before making changes.
+
+Fix confirmed defects in the existing filters using targeted changes. Preserve working behaviour and avoid unrelated refactoring.
+
+Do not remove providers, chains, working features or existing UI functionality to simplify the implementation.
+
+Do not assume that a filter is fixed because its checkbox, button or dropdown responds to clicks. Verify that it changes the actual results correctly.
+
+6. Test the implementation in the running application
+
+Use the available test suite and browser tooling to verify the actual application, not just whether the code compiles.
+
+Test at minimum:
+
+1. Expand and collapse the X submenu.
+2. Select X Profiles alone.
+3. Select X Posts alone.
+4. Select both and verify OR behaviour.
+5. Clear the selections and verify the default behaviour.
+6. Combine each X selection with other existing filters.
+7. Verify that profile links display the X logo and content links display the feather.
+8. Open representative links and verify that they lead to the correct destinations.
+9. Check missing or ambiguous URLs.
+10. Check empty results, loading states, pagination and filter changes.
+11. Test light mode, dark mode and mobile layouts.
+12. Verify that unrelated existing filters and chain-specific discovery still work.
+
+Use representative real records and inspect network requests and API responses where possible. Confirm that selected filters reach the backend and produce the expected results.
+
+Run the relevant existing automated tests, linting and build checks. Add or update focused tests for the new behaviour where appropriate.
+
+Do not claim a test passed unless it was actually run. Clearly distinguish automated checks, browser verification and anything that could not be tested.
+
+7. Implementation constraints
+
+- Preserve the existing working architecture.
+- Make the smallest reliable set of changes.
+- Do not rewrite working components or replace the current stack.
+- Do not introduce unnecessary dependencies or new data providers.
+- Do not weaken existing filtering, discovery or performance to implement this feature.
+- Do not make unrelated changes to trading links, token ingestion or chain-specific logic.
+- Keep the implementation maintainable and consistent with existing code conventions.
+
+If you discover that a major architectural change is necessary, explain the evidence and ask for approval before proceeding.
+
+8. Final report
+
+When finished, report:
+
+1. The root causes discovered.
+2. The files and components changed.
+3. How X Profile and X Post classification works.
+4. How the frontend and backend filters were connected.
+5. Which other filters were audited and which defects were actually fixed.
+6. The tests performed and their real results.
+7. Any remaining limitations or unresolved defects.
+
+The goal is a small, reliable improvement that fits DexHunter naturally and works end to end.
+
+Success means the correct links are classified, the icons distinguish profiles from content, the filters return the correct tokens, and the existing website continues to work as before.

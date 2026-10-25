@@ -1,0 +1,23 @@
+
+> preview
+> node scripts/with-app-env.mjs vite preview
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "../types" without a file extension (src/lib/dexPriority.ts:1:43). Add the file extension
+  - import "../pumpConstants" without a file extension (src/lib/providers/metaplexMetadata.ts:3:41). Add the file extension
+  - import "../ssrf" without a file extension (src/lib/providers/metaplexMetadata.ts:4:52). Add the file extension
+  - import "../lruCache" without a file extension (src/lib/providers/metaplexMetadata.ts:5:29). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ ╭────────── [Build Info] ─────────────╮
+ │                                     │
+ │  - Build Directory: .vercel/output  │
+ │  - Date: 10/23/2026, 9:27:24 PM     │
+ │  - Nitro Version: 3.0.260610-beta   │
+ │  - Nitro Preset: vercel             │
+ │                                     │
+ ╰─────────────────────────────────────╯
+
+  ➜  Local:   http://127.0.0.1:8081/
+[Pump Indexer] Initialized.
+[Pons] restored 4000 launches

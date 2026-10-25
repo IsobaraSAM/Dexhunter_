@@ -1,0 +1,305 @@
+DEXHUNTER: FULL DISCOVERY, INDEX INTEGRITY, RELIABILITY & SECURITY AUDIT
+
+MISSION
+
+Act as a senior blockchain data engineer, application reliability engineer, QA researcher, and application security tester.
+
+Perform a full, evidence-based diagnostic audit of the existing DexHunter application. Determine whether token discovery, indexing, search, feeds, launchpad readers, social filters, market data, performance, and security work correctly under real conditions.
+
+Do not merely review code or produce a theoretical checklist. Run the available application and repository tests, inspect the actual data pipeline, execute safe diagnostics, reproduce failures, and validate findings.
+
+Primary objective: establish how strong DexHunter actually is, what it discovers, what it misses, why records are incomplete, where data disappears, and what could break under real usage.
+
+RULES
+
+- Inspect the current implementation before changing anything.
+- Preserve working code, current architecture, existing UI, and recently repaired filters.
+- No broad rewrites, migrations, or new dependencies without proving they are necessary.
+- Never fabricate token counts, RPC results, market data, test results, or security findings.
+- Separate measured facts, hypotheses, confirmed root causes, and untested areas.
+- Use real chain data and existing authorized providers wherever possible.
+- Never expose API keys, private keys, seed phrases, wallet credentials, or sensitive environment variables in logs or reports.
+- Do not send transactions, spend funds, manipulate live markets, or test third-party systems without authorization.
+- Security tests must remain within the authorized application and infrastructure. Prefer local fixtures, staging, and read-only production checks.
+- Do not silently remove a source, suppress an error, or replace missing data with fake values.
+- Every proposed fix must include a reproduction, a minimal change, regression tests, and before/after evidence.
+- If a major architecture change appears necessary, explain the evidence and ask: "IS THIS WHAT YOU WANT?" before proceeding.
+
+PHASE 1: ESTABLISH THE REAL BASELINE
+
+1. Map the repository, runtime configuration, frontend, backend, API routes, workers, polling loops, database/cache, launchpad adapters, RPC clients, external APIs, and test suites.
+
+2. Trace the complete token lifecycle:
+   
+   RPC / provider → launch detection → event decoding → token address extraction → metadata enrichment → normalization → deduplication → persistence/cache → filtering/qualification → ranking → API → frontend.
+
+3. Identify which sources are authoritative for each chain and field. Distinguish launchpad events, direct RPC reads, indexed APIs, market-data providers, and social-data sources.
+
+4. Record the actual deployed or local build, commit/version, configuration, active chains, polling intervals, backfill cursors, cache TTLs, concurrency limits, and rate limits where available.
+
+5. Run existing tests and reproduce the current behavior before modifying code.
+
+6. Produce a dependency and failure-propagation map showing which parts of DexHunter depend on Argos/Argus, Arc, Solana, Robinhood/Ponds, and other integrations.
+
+Historical performance figures may exist in project notes. Treat them only as comparison points, not proof of current behavior.
+
+PHASE 2: COMPLETE TOKEN INDEX AUDIT
+
+Measure the number of unique tokens at EVERY pipeline stage, separately by chain, launchpad, and discovery source.
+
+Report:
+
+- Raw events or candidate tokens received.
+- Valid launch events decoded.
+- Unique contract addresses/program identifiers discovered.
+- Successfully enriched tokens.
+- Tokens persisted and available through the API.
+- Tokens displayed in each feed.
+- Rejected, filtered, duplicated, failed, and missing records.
+- Last successful discovery time, latest processed block/slot, and indexing lag.
+- Discovery rate over time, including intervals where discovery stopped.
+- Cursor position, backfill coverage, gaps, retries, and unrecovered failures.
+
+Never assume the total number shown by the UI equals the true index size.
+
+Investigate disappearing or shrinking token counts. Specifically test for:
+
+- Cache or database replacement instead of merging.
+- Cursor resets and incomplete pagination.
+- Expired records or incorrect cleanup.
+- Duplicate detection using the wrong key.
+- Incorrect chain/address normalization.
+- Provider responses overwriting better records with incomplete values.
+- Filtering occurring too early in the pipeline.
+- Frontend result limits being mistaken for total index size.
+- Failed requests returning empty arrays that overwrite valid data.
+- Launch events being missed during outages or polling delays.
+
+Produce a reconciliation table with candidate count, unique count, persisted count, displayed count, losses at each stage, and evidence for every discrepancy.
+
+PHASE 3: FIND THIN TOKENS AND EXPLAIN WHY
+
+Define a token as "thin" only through explicit, measurable completeness criteria. Do not confuse low liquidity with incomplete metadata.
+
+Audit these fields individually:
+
+- Contract address and chain identity.
+- Token name, symbol, decimals, supply, and logo.
+- Launchpad and launch timestamp.
+- Price, market capitalization, liquidity, and volume.
+- Pair/pool address and trading URL.
+- Transaction/activity statistics.
+- Social URLs, including X profiles versus X posts.
+- Source provenance, last update time, and data freshness.
+
+For every field, calculate completeness rates and identify which chains and sources account for missing values.
+
+Classify incomplete records by root cause:
+
+A. Never discovered.
+B. Discovered but event decoding failed.
+C. Discovered but enrichment failed.
+D. Source does not provide the field.
+E. Provider returned stale or invalid data.
+F. Data lost during normalization, deduplication, persistence, or API serialization.
+G. UI formatting or filtering defect.
+H. Cause not yet established.
+
+Select representative thin records from each major category and trace them end-to-end. Compare the same contract across available authoritative sources. Never infer that an unavailable value is zero.
+
+PHASE 4: DISCOVERY AND SEARCH TESTS
+
+Verify discovery with real, read-only checks.
+
+Test cases:
+
+1. A newly launched token on each supported launchpad.
+2. An older token that should already exist in the index.
+3. A random valid contract address that is not currently indexed.
+4. An indexed contract searched by exact address.
+5. Search by token name and symbol.
+6. Search with different letter casing and surrounding whitespace.
+7. A token excluded by current feed filters but still retrievable by exact contract address.
+8. A token whose metadata is incomplete but whose address is valid.
+9. A token launched during a simulated or observed polling outage.
+10. A token appearing through multiple discovery sources.
+
+For every case, record the expected result, actual result, time to discovery, search result, source, and failure stage.
+
+Critical distinction: an unindexed token must not be falsely reported as discovered simply because an external provider can retrieve it. Clearly label indexed results versus live external lookups.
+
+Check whether exact-address search bypasses feed limits and inappropriate discovery filters. Check whether name/symbol search uses the complete available index rather than only the currently loaded page.
+
+Do not generate unlimited random requests or spam public RPC endpoints. Use bounded test sets and documented provider limits.
+
+PHASE 5: LAUNCHPAD, RPC AND API RELIABILITY
+
+Audit every active chain and launchpad separately.
+
+For each integration, document:
+
+- Actual discovery mechanism and authoritative source.
+- Events, factories/programs, contracts, or endpoints used.
+- Polling interval and indexing range.
+- Block/slot cursor and restart behavior.
+- Rate limits, timeouts, retries, backoff, and concurrency.
+- Reorganizations or commitment/finality handling where relevant.
+- Pagination, historical backfill, and missed-event recovery.
+- Metadata enrichment dependencies.
+- Fallback behavior and source precedence.
+- Error rates, latency, and last successful update.
+
+Argos/Argus and Arc investigation
+
+Resolve the actual product, chain, protocol, and provider names used in the current code before diagnosing them. Do not conflate a launchpad, a blockchain, and a data provider.
+
+Investigate the reported fee or endpoint changes using available configuration, logs, provider documentation, and controlled read-only requests.
+
+Determine whether the issue is caused by authentication, changed fees, rate limits, endpoint changes, event decoding, RPC instability, stale cursors, missing metadata, or another verified cause.
+
+Test whether an Argos/Argus failure affects unrelated chains, shared caches, the global token feed, search, or the entire application.
+
+For Arc/Argus, verify actual on-chain discovery against the configured authoritative contracts and events. Check launch counts, event ranges, token-address extraction, metadata calls, and block coverage. Do not treat an external indexer as the source of truth if the implementation is designed around direct on-chain reads.
+
+Fault isolation
+
+In a controlled test environment, simulate:
+
+- One provider timing out.
+- One RPC endpoint returning errors.
+- Rate limiting.
+- Malformed or incomplete provider responses.
+- Delayed metadata.
+- Duplicate events.
+- Temporary network disconnection.
+- Application restart during polling.
+- A cursor falling behind the current chain head.
+
+Verify bounded retries, recovery, deduplication, stale-data indicators, and continued operation of unrelated sources.
+
+API fallback must not create duplicate tokens, conceal a broken primary source, or overwrite better records with worse data.
+
+PHASE 6: FEEDS, FILTERS AND USER EXPERIENCE
+
+Verify all existing feeds and repaired filters without redesigning them.
+
+Test:
+
+- Latest, Trending, Mints, chain-specific feeds, and other existing views.
+- Chain and launchpad selectors.
+- Search combined with filters.
+- Pagination, refresh, back/forward navigation, and URL state.
+- Token details and trading links.
+- Empty states, loading states, errors, and recovery.
+- Copy-address actions and external links.
+- Social links, including the distinction between X profile URLs and X post URLs.
+- Trust and social filter expansion behavior.
+- Correct separation of posts, profiles, replies, and other supported categories.
+- Missing market data, logo failures, invalid URLs, and undated launches.
+
+Check that filtering changes the visible results without silently deleting records from the underlying index.
+
+Ensure that a source failure does not produce a misleading empty state when data exists elsewhere.
+
+PHASE 7: PERFORMANCE AND CAPACITY
+
+Measure actual behavior rather than guessing.
+
+Benchmark:
+
+- Initial application load.
+- Discovery and ingestion latency.
+- Search by address, name, and symbol.
+- Latest and Trending feeds.
+- Chain-specific feeds.
+- Filter changes and combined filters.
+- Token-detail expansion.
+- Refreshes and concurrent requests.
+- Large result sets and pagination.
+- Recovery after a provider outage.
+
+Record p50/p95 latency where sample size permits, throughput, response sizes, memory growth, CPU usage where accessible, request counts, error rates, and cache hit rates where available.
+
+Run staged load tests against local or authorized staging infrastructure. Increase concurrency gradually and stop at configured safety limits.
+
+Investigate duplicate RPC calls, unbounded concurrency, sequential enrichment, repeated polling, request races, memory leaks, large payloads, and expensive frontend filtering.
+
+Establish the highest verified sustainable workload and the first observed bottleneck. Do not invent a maximum capacity from a single successful test.
+
+PHASE 8: SECURITY AND FAILURE TESTING
+
+Perform a scoped security audit of the application and its own test environment.
+
+Inspect:
+
+- API authentication and authorization where applicable.
+- Input validation for contract addresses, search parameters, URLs, and filters.
+- Injection risks, unsafe rendering, and cross-site scripting.
+- Server-side request forgery risks in URL-fetching or metadata services.
+- Rate limiting, request amplification, and denial-of-service exposure.
+- CORS, security headers, and sensitive error messages.
+- Secret exposure in frontend bundles, logs, and repository files.
+- Unsafe external-link handling.
+- Dependency vulnerabilities and outdated packages.
+- Cache poisoning, cross-chain cache collisions, and incorrect token ownership of cached records.
+- Abuse of expensive search, enrichment, or RPC endpoints.
+- Unhandled exceptions and failure propagation between integrations.
+
+Use safe proof-of-concept tests on local/staging instances. Do not exploit unrelated third-party systems, access other users' data, or perform destructive tests against production.
+
+For each finding, record severity, affected component, reproducible evidence, impact, prerequisites, minimal remediation, and regression test.
+
+PHASE 9: TARGETED REPAIRS AND REGRESSION
+
+After collecting baseline evidence:
+
+1. Rank confirmed defects by data loss, security risk, incorrect results, and user impact.
+2. Identify the exact file, function, and failure mechanism.
+3. Implement only the smallest justified fixes, preserving existing working behavior.
+4. Add regression tests for every confirmed defect.
+5. Repeat the original failing tests.
+6. Compare before/after token counts, completeness, latency, error rates, and recovery behavior.
+7. Confirm that fixes do not break other chains, filters, feeds, or integrations.
+8. Verify that the index grows correctly across multiple polling cycles and survives restarts.
+9. Record unresolved issues instead of claiming success.
+
+Do not automatically deploy, publish, or push changes to a remote repository. Report the proposed changes and validation results first.
+
+REQUIRED FINAL REPORT
+
+Produce a research report with these sections:
+
+1. Executive verdict: what works, what fails, and the biggest risks.
+2. Architecture and source-of-truth map.
+3. Index inventory by chain and launchpad.
+4. Discovery reconciliation and missing-token analysis.
+5. Thin-token report with field completeness and root causes.
+6. Search and discovery test matrix.
+7. Argos/Argus and other provider reliability findings.
+8. Feed, filter, social-link, and UI regression findings.
+9. Performance and capacity measurements.
+10. Security findings ranked by severity.
+11. Confirmed root causes with file/function references.
+12. Fixes implemented and before/after validation.
+13. Remaining defects, confidence levels, and limitations.
+14. Recommended next steps ranked by impact.
+
+Include machine-readable CSV or JSON evidence where useful: token counts, field completeness, failed tests, source health, and reproducible samples. Redact credentials and sensitive data.
+
+Every numerical claim must include its measurement method, scope, and timestamp. Every "fixed" claim must include a passing regression test or equivalent repeatable evidence.
+
+ACCEPTANCE CRITERIA
+
+The audit is complete only when:
+
+- The actual index size is measured and reconciled with the API and UI.
+- Missing and thin records have quantified causes or are explicitly marked unresolved.
+- Exact-address search is tested independently of feed filtering.
+- Supported chains and launchpads have documented discovery coverage.
+- Provider failures are tested for isolation and recovery.
+- Existing feeds and recently repaired X filters pass regression tests.
+- Security checks and performance tests have recorded evidence.
+- Changes preserve working features and survive repeat runs and restarts.
+- The final report distinguishes proven results from assumptions.
+
+Start with repository inspection and baseline measurements. Do not start by rewriting code or changing the architecture.

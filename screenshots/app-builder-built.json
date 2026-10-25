@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "DexHunter",
+      "hasCanvas": false,
+      "bodyTextLen": 182,
+      "bodyTextHash": "0d863a1904379b04bd5bef1c57c85c74c3481735dc1671b7bd7aed52d5f53b96",
+      "bodyTextPrefix": "Pause DexHunter Discovery Trending Latest ≤7d Mints Search S Exp",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "DexHunter",
+      "hasCanvas": false,
+      "bodyTextLen": 121,
+      "bodyTextHash": "6db656674b936704f2ce3953e14572ffdec31bcc0e538283c4f5124c03a80f89",
+      "bodyTextPrefix": "DexHunter Trending Latest Mints Filters Trending DexHunter · Mul",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
